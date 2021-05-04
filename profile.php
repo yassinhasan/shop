@@ -40,11 +40,21 @@ get_main_webisite_navbar();
                     <ul class="list-group list-group-flush">
                     <?php
                       $comments =   get_by_id("comments","userId",$user['UserId']);
-                      foreach($comments as $comment)
-                      { ?>
-                      <li class="list-group-item"><?= $comment['commentsDescription']?></li>
+                      
+                        if(!empty($comments))
+                        {
 
-                     <?php }
+                            foreach($comments as $comment)
+                            { ?>
+                                <li class="list-group-item"><?= $comment['commentsDescription']?></li>
+
+                                <?php 
+                            }
+                        }
+                        else
+                        {
+                            echo "<li class='list-group-item'>there is no comments here</li>";
+                        } 
                         
                     ?>
                     </ul>
@@ -56,11 +66,19 @@ get_main_webisite_navbar();
                     <ul class="list-group list-group-flush">
                     <?php
                       $items =   get_by_id("items","userId",$user['UserId']);
-                      foreach($items as $item)
-                      { ?>
-                      <li class="list-group-item"><?= $item['itemName']?></li>
+                      if(!empty($items))
+                      {
+                        foreach($items as $item)
+                            { ?>
+                            <li class="list-group-item"><?= $item['itemName']?></li>
 
-                     <?php }
+                            <?php 
+                            }
+                      }
+                      else
+                      {
+                        echo "<li class='list-group-item'>there is no items click <a href='add-tems.php'> here</a></li>";   
+                      }    
                         
                     ?>
                     </ul>
