@@ -259,7 +259,7 @@ if(isset($_POST['register']))
 				</div>
 
 				<button class="btn-register" name="register">
-					NEW Account 
+					NEW test 
 				</button>
 			
 			</form>
