@@ -5,8 +5,6 @@ $title = "login";
 get_main_webisite_header();
 get_main_webisite_navbar();
 
-
-    
     $message =isset( $_SESSION['message']) ?$_SESSION['message']:"";
 	echo $message;
     $_SESSION['message'] = "";

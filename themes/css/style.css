@@ -743,3 +743,25 @@ input[type=number] {
         }
        
 }
+
+/* add items page */
+.add-item-row
+{
+    padding-bottom: 200px;
+}
+.form-group-select
+{
+    margin: 20px 0;
+    font-size: 20px;
+}
+.form-group-select select
+{
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+.item-content
+{
+  border: 1px solid #009688;  
+}
+

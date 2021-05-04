@@ -77,7 +77,7 @@ get_main_webisite_navbar();
                       }
                       else
                       {
-                        echo "<li class='list-group-item'>there is no items c <a href='add-tems.php'>click  here</a></li>";   
+                        echo "<li class='list-group-item'>there is no items c <a href='add-items.php'>click  here</a></li>";   
                       }    
                         
                     ?>

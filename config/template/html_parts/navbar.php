@@ -14,6 +14,17 @@
                         <i class="fas fa-heart"></i>
                         <a href="#">favorite</a>
                     </li>
+                    <?php
+                        if(isset($_SESSION['Admin']) || isset($_SESSION['User']))
+                        { ?>
+                            <li class="menu-list">
+                                <i class="fas fa-plus"></i>
+                                <a href="add-items.php">Add Item</a>
+                            </li>
+                            <?php  
+                        }
+
+                    ?>
                     <li class="menu-list">
                         <i class='fas fa-user'></i>
                     <?php 
