@@ -122,10 +122,10 @@ get_main_webisite_navbar();
     <h1> Add new items </h1>
     <div class="row add-item-row">     
             <div class="col-md-8">
-                <form  method="POST" enctype="application/x-www-form-urlencoded">
+                <form  method="POST" enctype="application/x-www-form-urlencoded" class="theform">
                         <div class="col-md-10">
                             <label for="itemName" class="form-label">Item Name </label>
-                            <input type="text" name="itemName" class="form-control" id="itemName"
+                            <input type="text" name="itemName" class="form-control check-item-exists" id="itemName"
                             value="<?= isset($_POST['itemName'])?$_POST['itemName'] : "" ?>"
                             
                             >
@@ -152,8 +152,6 @@ get_main_webisite_navbar();
                     <div class="col-md-10 form-group-select">
                         <select class="form-select all-countries" name="itemCountryMade">
                         <option value="">chose country</option>
-                        <option value="saudi">saudi</option>
-
                         </select>
                     </div> 
                     <div class="col-md-10 form-group-select">

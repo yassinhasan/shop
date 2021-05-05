@@ -94,4 +94,15 @@ decrease_qty.forEach(function (el) {
     var input_item_qty = btn.target.previousElementSibling;
     input_item_qty.stepDown(1);
   });
-});
+}); // fetch country api
+
+var selectcountry = document.querySelector(".form-select all-countries");
+
+function fetch_countries() {
+  fetch("https://restcountries.eu/rest/v2/all").then(function (respnse) {
+    var data = JSON.parse(respnse);
+    console.log(data);
+  });
+}
+
+fetch_countries();

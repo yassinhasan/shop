@@ -45,9 +45,17 @@ clicked_a.forEach((e)=>
 })
 collapse_expanded_submenu
 function collapse_expanded_submenu(){
+    if(document.querySelector(".menu-has-children.active .submenu"))
+    {
     document.querySelector(".menu-has-children.active .submenu")
     .removeAttribute("style");
-    document.querySelector(".menu-has-children.active").classList.remove("active")
+    }
+
+    if(document.querySelector(".menu-has-children.active"))
+    {
+         document.querySelector(".menu-has-children.active").classList.remove("active")
+    }
+   
     
 }
 
@@ -126,4 +134,114 @@ decrease_qty.forEach((el)=>
 
 })
 
+// fetch country api
+let selectcountry = document.querySelector(".all-countries");
+
+function fetch_countries()
+{
+    fetch("https://restcountries.eu/rest/v2/all")
+    .then(resp=>
+        {
+            return data = resp.json();
+        })
+    .then(data=>
+        {
+            // for(let country of data)
+            // {
+            //     let option = new Option(country['name'],country['name']);
+            //     selectcountry.appendChild(option);
+            // }
+            data.map(country=>
+                {
+                 let option = new Option(country['name'],country['name']);
+                selectcountry.appendChild(option);
+                })
+        }) 
+    .catch(err=>
+        {
+            console.log(err)
+        })       
+}
+fetch_countries();
+
+
+
+let input_item_name = document.querySelector('.check-item-exists');
+let myform = document.querySelector(".theform")
+input_item_name.addEventListener("blur",()=>
+{
+    // let formdata = new FormData();
+    // formdata.append('itemName',input_item_name.value);
+
+    let itemname = new URLSearchParams(`itemName=${input_item_name.value}`);
+    fetch("http://www.shop.com/admin/check_data/checkdata.php",
+    {
+        method: 'POST',
+        body:itemname
+    })
+    .then(resp=>
+        {
+         return answer = resp.text();
+        })
+    .then(answer=>
+        {
+           
+           if(answer == 'yes')
+           {
+            if(document.querySelector('.exists-value'))
+            {
+                document.querySelector(".exists-value").remove();
+            }
+            let pp =document.createElement("p");
+            pp.classList.add("alert");
+            pp.classList.add("exists-value");
+            pp.classList.add("alert-danger");
+            let ptext = document.createTextNode( `soory this item is exists `);
+            pp.appendChild(ptext);
+            input_item_name.parentElement.appendChild(pp);
+            document.querySelector(".submit").classList.add("disabled");
+
+           }
+           else if(answer == 'no')
+           {
+            if(document.querySelector('.exists-value'))
+            {
+                document.querySelector(".exists-value").remove();
+            }
+            document.querySelector(".submit").classList.remove("disabled");
+           }
+        })    
+
+
+})
+
+// let sub = document.querySelector(".submit");
+// sub.addEventListener("click",(e)=>
+// {
+//     e.preventDefault();
+//     let mdata = new URLSearchParams();
+//     for(let names of new FormData(myform))
+//     {
+//         mdata.append(names[0],names[1])
+        
+//     }
+//         fetch("http://www.shop.com/admin/check_data/checkdata.php",
+//     {
+//         method: 'POST',
+//         // headers: {
+//         //     'Content-Type': 'application/x-www-form-urlencoded', 
+//         // },
+//         body: mdata
+//     })
+//     .then(resp=>
+//         {
+//             return answer = resp.json();
+//         })
+//     .then(answer=>
+//         {
+//             console.log(answer)
+//         })
+
+ 
+// })
 

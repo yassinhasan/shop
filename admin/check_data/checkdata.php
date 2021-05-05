@@ -1,5 +1,7 @@
 <?php
-require_once dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR."..\ini.php";
+require_once "../../ini.php";
+
+
            //  form ## UserName
            if(isset($_POST['UserName']))
            {
@@ -109,6 +111,38 @@ require_once dirname(realpath(__FILE__)).DIRECTORY_SEPARATOR."..\ini.php";
              $stmt = $conn->prepare($sql);
             $stmt->bindValue(":CategoryName",$_POST['CategoryName'],PDO::PARAM_STR);      
              }
+            // $stmt->bindValue(":CategoryId",$UserId,PDO::PARAM_INT);
+            if ($stmt->execute())
+            {
+               if($stmt->rowCount() > 0)
+               {
+                   echo "yes";
+               }
+                else
+                {
+                    echo "no";
+                }
+
+            }   
+        }
+        elseif(isset($_POST['itemName']))
+        {
+            header('Content-type: text/plain');//with header Content type 
+            global $conn;
+            // $CategoryId = isset($_POST['CategoryId']) ?$_POST['CategoryId'] : ""; 
+            // if((isset($_POST['action']) && $_POST['action'] == 'cat_edit'))
+            // {
+            //     $sql = "SELECT * FROM category WHERE CategoryName = :CategoryName AND CategoryId != :CategoryId";
+            //     $stmt = $conn->prepare($sql);
+            //     $stmt->bindValue(":CategoryName",$_POST['CategoryName'],PDO::PARAM_STR);
+            //     $stmt->bindValue(":CategoryId",$CategoryId,PDO::PARAM_INT); 
+            // }
+            // else
+            // {
+                $sql = "SELECT * FROM items WHERE itemName = :itemName";            
+             $stmt = $conn->prepare($sql);
+            $stmt->bindValue(":itemName",$_POST['itemName'],PDO::PARAM_STR);      
+            //  }
             // $stmt->bindValue(":CategoryId",$UserId,PDO::PARAM_INT);
             if ($stmt->execute())
             {
