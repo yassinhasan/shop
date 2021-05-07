@@ -162,13 +162,18 @@ function fetch_countries()
             console.log(err)
         })       
 }
-fetch_countries();
+if(selectcountry)
+{
+    fetch_countries();
+}
 
 
 
 let input_item_name = document.querySelector('.check-item-exists');
 let myform = document.querySelector(".theform")
-input_item_name.addEventListener("blur",()=>
+if(input_item_name)
+{
+    input_item_name.addEventListener("blur",()=>
 {
     // let formdata = new FormData();
     // formdata.append('itemName',input_item_name.value);
@@ -214,6 +219,7 @@ input_item_name.addEventListener("blur",()=>
 
 
 })
+}
 
 // let sub = document.querySelector(".submit");
 // sub.addEventListener("click",(e)=>
@@ -244,4 +250,64 @@ input_item_name.addEventListener("blur",()=>
 
  
 // })
+
+// live review
+let itemname = document.querySelector(".item-info .it-name");
+let itemndesc = document.querySelector(".item-info .it-desc");
+let itemprice = document.querySelector(".item-info .it-price");
+let itemrating = document.querySelector(".item-rating");
+
+
+
+function livepreview(el)
+{
+    if(el)
+    {
+        el.addEventListener("keyup",()=>
+        {
+        document.querySelector(el.getAttribute('data-name')).innerHTML = el.value;
+        })
+    }
+}
+
+livepreview(input_item_name);
+// console.log(document.querySelector('input[data-name=".it-desc"'))
+livepreview(document.querySelector('[data-name=".it-desc"'))
+livepreview(document.querySelector('[data-name=".it-price"'))
+
+let selector_ratings = document.querySelector("select[name='itemRating']");
+if(selector_ratings)
+{
+    selector_ratings.addEventListener("change",()=>
+{
+    itemrating.innerHTML = "";
+   let x = selector_ratings.value;
+   for(let i= 0 ; i < x; i++)
+   { 
+        let span= document.createElement("span");
+        let istar= document.createElement("i");
+
+        istar.classList.add("fas");
+        istar.classList.add("fa-star");
+        istar.classList.add("start-chekced");
+        span.appendChild(istar);
+        itemrating.appendChild(span)
+
+       }
+
+       for(let y = 0 ; y < 5 - x ; y++)
+       { 
+        let span= document.createElement("span");
+        let istar= document.createElement("i");
+        istar.classList.add("fas");
+        istar.classList.add("fa-star");
+        span.appendChild(istar);
+        itemrating.appendChild(span)
+    }
+      
+})
+}
+
+
+
 

@@ -65,7 +65,6 @@ header
 {
     flex: 0 0 50%;
     display: flex;
-    text-align: end;
     justify-content: flex-end;
     padding: 0 10px;
 
@@ -691,11 +690,12 @@ input[type=number] {
 /* start profile */
 /* end profile */
 
-.profile
+.profile,.item
 {
-    min-height: 100vh
+    min-height: 100vh;
+    padding-bottom: 200px;
 }
-.profile .box 
+.profile .box,.item .box
 {
     display: flex;
 }
@@ -706,17 +706,17 @@ input[type=number] {
     color: #fff;
     margin-bottom: 60px;
 }
-.profile-section
+.profile-section,.item-section
 {
     flex: 0 0 33%;
     margin-right: 20px;
 }
-.profile-stats
+.profile-stats,.item-stats,.form-comment
 {
     width: 100%;
 
 }
-.profile-stats .card
+.profile-stats .card,.item-stats .card
 {
     margin-bottom: 20px;
 }
@@ -729,12 +729,12 @@ input[type=number] {
 }
 @media (max-width:766px) {
 
-    .profile .box 
+    .profile .box,.item .box
         {
             display: block;
              text-align: center;
         }
-        .profile-section
+        .profile-section,.item-section,.show-comments
         {
             display: block;
             width: 300px;
@@ -764,4 +764,171 @@ input[type=number] {
 {
   border: 1px solid #009688;  
 }
+.item-content img
+{
+    max-width: 100%;  
+}
 
+/* start comment section on items */
+.item-comments
+{
+    padding: 40px 0;
+}
+
+/* comments area */
+.form-comment
+{
+    width: 100%;
+    flex: 0 0 62%;
+    margin-left: 39px;
+    margin-bottom: 40px;
+}
+.form-comment textarea
+{
+    height: 150px;
+    resize: none;
+    margin-bottom: 12px;
+}
+.hide-for-comment
+{
+    flex: 0 0 33%;
+}
+.all-comments,.item-name
+{
+    text-align: center;
+    color: capitalize;
+    text-transform: capitalize;
+    color: yellowgreen;
+    flex: 0 0 100%;
+    margin-bottom: 22px;
+}
+.item-comments .box
+{
+    flex-wrap: wrap;
+}
+.show-comments
+{
+    display: flex;
+    margin-bottom: 20px;
+    flex: 0 0 100%;
+    display: flex;
+    padding: 10px;
+    border-radius: 5px;
+}
+.show-comments .user-comment
+
+{
+
+    padding: 4px; 
+    flex: 0 0 33%;
+}
+.show-comments .comment
+
+{
+    width: 100%;
+    flex: 0 0 62%;
+    margin-left: 39px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: #eee;
+    position: relative;
+}
+.show-comments .comment::before
+{
+    content: "";
+    position: absolute;
+    left: -30px;
+    border-style: solid;
+    border-width: 15px;
+    border-color: transparent #eee transparent transparent;
+}
+.user-comment-ifno
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    
+}
+.user-comment-ifno .box
+{
+    background: #eee;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 20px;
+    /* text-align: center; */
+    min-width: 130px;
+    align-items: center;
+}
+.user-comment-ifno img
+{
+    border-radius: 50%;
+    max-width: 100%;
+    width: 45px;
+    margin-bottom: 8px; 
+
+}
+.no-comment
+{
+    flex: 0 0 100%;
+    text-align: center;
+    background: #eee;
+    padding: 4px;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+@media (max-width: 992px) {
+    .item-comments .box 
+    {
+        display: block;
+    }
+    .hide-for-comment
+    {
+        display: none;
+    }
+    .form-comment {
+        width: 100%;
+        margin-bottom: 40px;
+        margin-left: 0;
+        
+    }
+    .profile-section, .item-section, .show-comments {
+        display: block;
+        width: 100%;
+        /* margin: auto; */
+        background: #eee;
+        padding: 10px;
+        margin-bottom: 31px;
+        border-radius: 9px;
+    }
+    .user-comment
+    {
+        
+        padding: 8px;
+        font-size: 20px;
+        font-family: sans-serif;
+        text-transform: capitalize;
+        margin-bottom: 5px;
+    }
+    .show-comments .comment {
+        width: 100%;
+        
+        margin-left: 0;
+    }
+    .user-comment-ifno {
+        display: block;
+        /* align-items: center; */
+        /* justify-content: flex-end; */
+        text-align: center;
+        background: #fff
+    }
+    .user-comment-ifno .box{
+        background-color: #f8f9fa
+    }
+    .user-comment-ifno .box a{
+        display: block;
+        /* align-items: center; */
+        /* justify-content: flex-end; */
+        text-align: center;
+    }
+}

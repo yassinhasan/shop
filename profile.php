@@ -14,7 +14,9 @@ get_main_webisite_navbar();
         <?php
         if(isset($_SESSION['User']))
         {
-            $users = get_by_id("users","UserId",$_SESSION['User']['UserId']);
+            $userid = "";
+            $userid = isset($_GET['userId']) ? $_GET['userId'] : $_SESSION['User']['UserId'];
+            $users = get_by_id("users","UserId",$userid);
             $user = array_shift($users)
             
         ?>
@@ -70,7 +72,7 @@ get_main_webisite_navbar();
                       {
                         foreach($items as $item)
                             { ?>
-                            <li class="list-group-item"><?= $item['itemName']?></li>
+                            <li class="list-group-item"><a href="items.php?itemId=<?= $item['itemId']?>"><?= $item['itemName']?></a></li>
 
                             <?php 
                             }

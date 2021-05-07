@@ -125,7 +125,9 @@ get_main_webisite_navbar();
                 <form  method="POST" enctype="application/x-www-form-urlencoded" class="theform">
                         <div class="col-md-10">
                             <label for="itemName" class="form-label">Item Name </label>
-                            <input type="text" name="itemName" class="form-control check-item-exists" id="itemName"
+                            <input type="text" name="itemName" class="form-control check-item-exists"
+                             id="itemName"
+                             data-name = '.it-name'
                             value="<?= isset($_POST['itemName'])?$_POST['itemName'] : "" ?>"
                             
                             >
@@ -133,12 +135,14 @@ get_main_webisite_navbar();
                         <div class="col-md-10">
                             <label for="itemDescription" class="form-label"> Item Description</label>
                             <input type="text" name="itemDescription" class="form-control" id="itemDescription"
+                            data-name = '.it-desc'
                             value="<?= isset($_POST['itemDescription'])?$_POST['itemDescription'] : "" ?>"
                             >
                         </div>
                         <div class="col-md-10">
                             <label for="itemPrice" class="form-label">itemPrice </label>
                             <input type="text" name="itemPrice"	 class="form-control" id="itemPrice" 
+                            data-name = '.it-price'
                             value="<?= isset($_POST['itemPrice'])?$_POST['itemPrice'] : "" ?> "
                             >
                         </div>         
@@ -196,12 +200,16 @@ get_main_webisite_navbar();
                                 <img src="//cdn-aldawaa.com/media/catalog/product/cache/4af02630f79858b92879ba1184cb0894/1/0/101975_2.jpg" alt="test">
                                 <span class="love-item"><i class="fas fa-heart rate-by-heart"></i></span>
                                 <div class="item-info">
-                                    <p>expan</p>
-                                    <p>expan is used for couph </p>
-                                    <span>20 SR</span>
+                                    <p class="it-name">TEST</p>
+                                    <p class="it-desc">TEST is used for test </p>
+                                    <span class="it-price">20 </span> <span> SR</span>
                                     <div class="item-rating"> 
-                                        <?php
-                                    for($x= 0 ; $x <  5 ; $x++)
+                                      <span><i class='fas fa-star start-chekced'></i></span>
+                                      <span><i class='fas fa-star start-chekced'></i></span>
+                                      <span><i class='fas fa-star start-chekced'></i></span>
+                                      <span><i class='fas fa-star start-chekced'></i></span>
+                                      <span><i class='fas fa-star start-chekced'></i></span>
+                                    <!-- for($x= 0 ; $x <  5 ; $x++)
                                     { 
                                         echo "<span><i class='fas fa-star start-chekced'></i></span>";
                                         }
@@ -209,8 +217,8 @@ get_main_webisite_navbar();
                                         for($x= 0 ; $x < 5 - 3 ; $x++)
                                         { 
                                             echo "<span><i class='fas fa-star'></i></span>";
-                                         }
-                                        ?>
+                                         } -->
+                                       
                                     </div>
                                 </div>
                                     <input type="hidden" value="test">
