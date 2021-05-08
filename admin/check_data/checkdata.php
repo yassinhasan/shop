@@ -125,35 +125,29 @@ require_once "../../ini.php";
 
             }   
         }
-        elseif(isset($_POST['itemName']))
+        elseif(isset($_POST['searcheditem']))
         {
             header('Content-type: text/plain');//with header Content type 
             global $conn;
-            // $CategoryId = isset($_POST['CategoryId']) ?$_POST['CategoryId'] : ""; 
-            // if((isset($_POST['action']) && $_POST['action'] == 'cat_edit'))
-            // {
-            //     $sql = "SELECT * FROM category WHERE CategoryName = :CategoryName AND CategoryId != :CategoryId";
-            //     $stmt = $conn->prepare($sql);
-            //     $stmt->bindValue(":CategoryName",$_POST['CategoryName'],PDO::PARAM_STR);
-            //     $stmt->bindValue(":CategoryId",$CategoryId,PDO::PARAM_INT); 
-            // }
-            // else
-            // {
-                $sql = "SELECT * FROM items WHERE itemName = :itemName";            
+             $sql = "SELECT * FROM items WHERE itemName like  CONCAT('%',:itemName,'%')";            
              $stmt = $conn->prepare($sql);
-            $stmt->bindValue(":itemName",$_POST['itemName'],PDO::PARAM_STR);      
-            //  }
-            // $stmt->bindValue(":CategoryId",$UserId,PDO::PARAM_INT);
+            $stmt->bindValue(":itemName",$_POST['searcheditem'],PDO::PARAM_STR);      
+                         // $stmt->bindValue(":CategoryId",$UserId,PDO::PARAM_INT);
             if ($stmt->execute())
             {
                if($stmt->rowCount() > 0)
                {
-                   echo "yes";
+                   $result =  $stmt->fetchAll();
+                   echo  json_encode($result);
+                
                }
                 else
                 {
-                    echo "no";
+                    echo json_encode(false);
+                 
                 }
 
             }   
         }
+?>
+

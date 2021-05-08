@@ -44,7 +44,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link <?= set_active_class('dashboard');?>"
-           href="/admin/dashboard.php"><?= lang("dashboard") ?></a>
+           href="/admin/dashboard.php#com"><?= lang("dashboard") ?></a>
         </li>
       </ul>
       

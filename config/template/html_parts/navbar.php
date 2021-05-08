@@ -10,18 +10,20 @@
             <!-- will dissapper at mob size -->
             <div class="nav">
                 <ul class="nav-menu">
-                    <li class="menu-list">
-                        <i class="fas fa-heart"></i>
-                        <a href="#">favorite</a>
-                    </li>
                     <?php
                         if(isset($_SESSION['Admin']) || isset($_SESSION['User']))
                         { ?>
-                            <li class="menu-list">
-                                <i class="fas fa-plus"></i>
-                                <a href="add-items.php">Add Item</a>
+                            <li class="menu-list drop-test">
+                                <i class="fas fa-cog"></i>
+                                <a href="#">manage Item</a>
+                                <ul class="sub">
+                                    <li> <a href="add-items.php"><i class="fas fa-plus"></i> Add Item</a></li>
+                                    <li> <a href="add-items.php"><i class="fas fa-heart"></i> favorite Item</a></li>
+                                    <li> <a href="add-items.php">Add Item</a></li>
+                                    <li> <a href="add-items.php">Add Item</a></li>
+                                </ul>
                             </li>
-                            <?php  
+                                        <?php  
                         }
 
                     ?>
@@ -100,7 +102,7 @@
                 <img src="https://cdn-aldawaa.com/media/logo/stores/1/logo.svg">
             </div>
             <div class="input-search">
-                <input type="search" placeholder="Search for products, categories, ...">
+                <input type="search" class="search-input" placeholder="Search for products, categories, ...">
             </div>
         </div>
         <!-- overlay when menu open -->

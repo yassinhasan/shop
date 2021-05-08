@@ -180,6 +180,50 @@ gettheheader();
                   </ul>
                </div>
               <!-- END TEST card -->
+              <!-- start comments card -->
+              <div class="card">
+                  <div class="card-header">
+                    <?php $limit = 5; ?>
+                     <h3>last <strong> <?= $limit?></strong> comments</h3>
+                  </div>
+                  <ul class="list-group list-group-flush dashboard-comments">
+                     <?PHP 
+                     $sql = "SELECT comments.*,items.itemName as itemName,users.userName as userName FROM comments
+                     INNER JOIN items 
+                     on comments.itemId = items.itemId
+                     INNER JOIN users 
+                     on comments.userId = users.userId ORDER BY commentsId DESC LIMIT $limit;
+                     ";
+                     global $conn;
+                     $stmt = $conn->prepare($sql);
+                     $stmt->execute();
+                     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                     // <!-- commentsId commentsDescription commentsApprove userId itemId commentsDate -->
+                     foreach($results as $comment)
+                     { ?>
+
+                     <li class="list-group-item list-group-comment">
+                           <span class="author"><a href="/admin/members.php?action=newmembers&UserId=<?=$comment['userId']?>&dash=yes"><?= $comment['userName'] ?></a></span>
+                           <span class="author-comment"><?= $comment['commentsDescription'] ?></span>
+                         
+                     </li>
+                  <?php }
+
+                     ?>
+                  </ul>
+               </div>
+              <!-- END comments card -->
+              <!-- start TEST card -->
+              <div class="card" id="com">
+                  <div class="card-header">
+                    <?php $limit = 5; ?>
+                     <h3>last <strong> <?= $limit?></strong> memebers</h3>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                     <li class="list-group-item"> there's no item to show</li>
+                  </ul>
+               </div>
+              <!-- END TEST card -->
 
             </div>
          </div>

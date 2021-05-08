@@ -310,4 +310,105 @@ if(selector_ratings)
 
 
 
+// test dropdpwn menu
+let dropdownli = document.querySelector(".drop-test");
+if(dropdownli)
+{
+    dropdownli.addEventListener("click",()=>
+{
+    let sub = document.querySelector(".sub");
+    sub.classList.toggle("show");
+    sub.style.maxHeight = sub.scrollHeight +"px";
+    // console.log(sub.scrollHeight)
+})
+}
+
+
+window.addEventListener("resize",()=>
+{
+    let sub = document.querySelector(".sub");
+    if(sub)
+    {
+        if(sub.classList.contains("show"))
+        {
+            sub.classList.toggle("show");
+        }
+    }
+})
+
+// search all items at home page
+let searchinput = document.querySelector(".search-input");
+
+searchinput.addEventListener("keyup",()=>
+{
+    let all_contents = document.querySelectorAll(".item-content");
+    if(searchinput.value.length > 0)
+    {
+        all_contents.forEach(e=>
+        {
+              
+            e.style.display = "none";
+        });
+        let searcheditem = new URLSearchParams(`searcheditem=${searchinput.value}`);
+        fetch("http://www.shop.com/admin/check_data/checkdata.php",
+        {
+            method: 'POST',
+            body:searcheditem
+        })
+        .then(resp=>
+            {
+             return answer = resp.json();
+            })
+        .then(data=>
+            {
+
+
+               if(data !== false)
+               {
+                for(let items of data)
+                {
+                    let dataname = items['itemName'].replace(" ","");
+                     if(document.querySelector(`[data-name=${dataname}`))
+                        {
+                            document.querySelector(`[data-name=${dataname}`).style.display ="flex";
+                        }
+                    
+                }
+               }
+            //     {
+            //         let dataname = data['itemName'].replace(" ","");
+                  
+            //         if(document.querySelector(`[data-name=${dataname}`))
+            //         {
+            //             document.querySelector(`[data-name=${dataname}`).style.display ="flex";
+            //         }
+            //     }
+             
+            }) 
+      
+        // if(fetch_item() !== false)
+        // {
+            
+        //      console.log(item);
+        //     // if(document.querySelector(`[data-name=${}`))
+        //     // {
+        //     //     document.querySelector(`[data-name=${searchinput.value}`).style.display ="flex";
+        //     // }
+        // }
+      
+
+        
+    }
+    else
+    {
+        all_contents.forEach(e=>
+            {
+                e.style.display = "flex";
+            })
+    }
+
+})
+
+
+
 

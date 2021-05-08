@@ -263,5 +263,17 @@ function checkislogin()
 
 }
 checkislogin();
+
+// get all
+
+function get_all($table_name,$where=null,$orderby,$oreder_type)
+{
+    global $conn;
+    $sql = "SELECT * FROM $table_name $where ORDER BY $orderby $oreder_type" ;
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $results; 
+}
    
 
