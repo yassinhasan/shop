@@ -10,6 +10,7 @@
             $Visibility  = isset($_POST['Visibility']) ? $_POST['Visibility']  : "";
             $AllowComments  = isset($_POST['AllowComments']) ? $_POST['AllowComments']  : "";
             $AllowAds  = isset($_POST['AllowAds']) ? $_POST['AllowAds']  : "";
+            $subCategory  = isset($_POST['subCategory']) ? $_POST['subCategory']  : "";
 
             // $sql2 = "SELECT Password FROM users WHERE CategoryId  = :CategoryId LIMIT 1";
             // global $conn;
@@ -30,6 +31,13 @@
             {
                 $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>CategoryDescription</strong> can not be empty
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>';
+            }
+            if(empty($subCategory))
+            {
+                $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>subCategory</strong> can not be empty
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>';
             }
@@ -64,10 +72,10 @@
             if(empty($formeroor))
             {
        //  CategoryId   // category (`CategoryName`, `CategoryDescription`, `Ordering`, `Visibility`, `AllowComments`, `AllowAds`)
-                    $sql = "UPDATE category set `CategoryName` = ? , `CategoryDescription` = ? , `Ordering` = ? , `Visibility` = ? , `AllowComments` = ? , `AllowAds` = ?  WHERE `CategoryId` = ? ";
+                    $sql = "UPDATE category set `CategoryName` = ? , `CategoryDescription` = ? , `subCategory` = ? , `Ordering` = ? , `Visibility` = ? , `AllowComments` = ? , `AllowAds` = ?  WHERE `CategoryId` = ? ";
                     global $conn;
                     $stmt = $conn->prepare($sql);
-                    if ($stmt->execute(array($CategoryName,$CategoryDescription,$Ordering,$Visibility,$AllowComments,$AllowAds,$CategoryId)))
+                    if ($stmt->execute(array($CategoryName,$CategoryDescription,$subCategory,$Ordering,$Visibility,$AllowComments,$AllowAds,$CategoryId)))
                     {
                     
                         $_SESSION['message'] ="<p class='alert alert-success'> <strong> ".$stmt->rowCount() ."</strong>  updated</p>";

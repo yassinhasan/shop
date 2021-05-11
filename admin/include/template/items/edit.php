@@ -128,6 +128,11 @@
                     ?>
                 </select>
             </div>
+            <div class="mb-3 col-md-6">
+                    <label for="tags" class="form-label">tags Names </label>
+                    <input type="text" name="tags" class="form-control" id="tags"
+                    value="<?= isset($item['tags'])?$item['tags'] : "" ?>">
+            </div>
 
             <button type="submit" class="btn btn-primary submit" name="save">Submit</button>
             </form>

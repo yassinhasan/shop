@@ -26,7 +26,7 @@
 
 $sort = isset($_GET['sort']) ?$_GET['sort']: 'asc' ;
 
-$sql = "SELECT * FROM category ORDER BY Ordering $sort ";
+$sql = "SELECT * FROM category WHERE subCategory = 0 ORDER BY Ordering $sort ";
 global $conn;
 $stmt = $conn->prepare($sql);
 $stmt->execute();
@@ -57,6 +57,20 @@ foreach($categories as $category)
                 </div>
 
             </div>
+            <?php
+            $sub = get_all("category","where subCategory = {$category['CategoryId']}");
+            if(!empty($sub))
+            { 
+                echo "<ul class='sub-cat'>";
+                    foreach($sub as $s)
+                    {?>
+                        <li><a href="#"><?= $s['CategoryName']?></a></li>
+               <?php }
+                echo "</ul>";        
+            
+            }
+
+            ?>
            
         </div>
 <?php }?>

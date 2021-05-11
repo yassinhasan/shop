@@ -1,4 +1,6 @@
 <?php 
+
+
     if(isset($_POST['save']))
     {
        $UserName = isset($_POST['UserName'])?trim($_POST['UserName']) : "";
@@ -8,10 +10,27 @@
        $GroupID = isset($_POST['GroupID'])?$_POST['GroupID'] : "";
        $TrustStatus = isset($_POST['TrustStatus'])?$_POST['TrustStatus'] : "";
        $RegStatus = isset($_POST['RegStatus'])?$_POST['RegStatus'] : "";
+       $avatars = isset($_FILES['avatar'])?$_FILES['avatar'] : "";
+       $avatar_temp_name = $avatars['tmp_name'];
+       $avatar_name = $avatars['name'];
+       $avatar_size = $avatars['size'];
+       $avatar_type = $avatars['type'];
+       $avatar_extension =explode(".",$avatar_name);
+        // avtat extension
+       $avatar_extension = strtolower(end($avatar_extension));
+
+       $allowed_Extension  =array("png","jpeg","jpg","gif","jfif");
 
 
-        $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `FullName`, `GroupID`, `TrustStatus`, `RegStatus`)
-        VALUES(:U,:P,:E,:FN,:GI,:TS,:RS)";
+       //allowed size
+       $allowed_size = 4E6;
+
+       $rand_name = rand(0,1000);
+        //avatar file name random
+       $avatr_rand_name = $rand_name."_".$avatar_name;
+
+        $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `FullName`, `GroupID`, `TrustStatus`, `RegStatus`,`avatar`)
+        VALUES(:U,:P,:E,:FN,:GI,:TS,:RS,:av)";
         global $conn;
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":U",$UserName,PDO::PARAM_STR);
@@ -21,6 +40,7 @@
         $stmt->bindValue(":GI",$GroupID,PDO::PARAM_INT);
         $stmt->bindValue(":TS",$TrustStatus,PDO::PARAM_INT);
         $stmt->bindValue(":RS",$RegStatus,PDO::PARAM_INT);
+        $stmt->bindValue(":av",$avatr_rand_name,PDO::PARAM_STR);
         $formeroor = [];
 
         if(empty($UserName))
@@ -61,12 +81,79 @@
             <strong>RegStatus</strong> can not be empty
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';        }
-        if(empty($formeroor))
+        if( $avatars['error'] === 4)
         {
+            $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong> soory no file uploaeded</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';        
+        }
+        if( !in_array($avatar_extension,$allowed_Extension))
+        {
+            $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong> soory this type not allowed</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';        
+        }
+        if(  $avatar_size > $allowed_size)
+        {
+            $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong> soory max allowed size is 4 MG</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';        
+        }
+        if(empty($formeroor))
+        { 
             if($stmt->execute())
             {
                 if($stmt->rowCount() > 0 )
                 {
+                //  //   move file
+                    $dir = dirname(__FILE__);
+                    $up = $dir.DS."..".DS."..".DS."..".DS."..".DS;
+                    $file_direction =  $dir.DS."..".DS."..".DS."..".DS."themes".DS."images".DS."uploads".DS.$UserName.DS;
+                    $file_direction_in_main = $up."themes".DS."images".DS."uploads".DS.$UserName.DS;
+
+                    if(!file_exists($file_direction))
+                    {
+                        mkdir($file_direction,0777,true);
+                    }
+                    if(!file_exists($file_direction_in_main))
+                    {
+                        mkdir($file_direction_in_main,0777,true);
+                    }
+
+                    // check if file already exists before
+
+                    $files =  glob($file_direction."*.*");
+                    $mainfiles =  glob($file_direction_in_main."*.*");
+                    foreach($files as $f)
+                    {
+                        if(is_file($f)){
+                            $fn = explode("_",$f);
+                            if(strtolower($fn[1]) == $avatar_name)
+                            {
+                                unlink($f);
+                            }
+
+                        }
+                    }
+                    foreach($mainfiles as $f)
+                    {
+                        if(is_file($f)){
+                            $fn = explode("_",$f);
+                            if(strtolower($fn[1]) == $avatar_name)
+                            {
+                                unlink($f);
+                            }
+
+                        }
+                    }
+
+                    if(move_uploaded_file($avatar_temp_name,$file_direction.$avatr_rand_name))
+                    {
+                        copy($file_direction.$avatr_rand_name,$file_direction_in_main.$avatr_rand_name);
+                    }
                     $_SESSION['message'] ="<p class='alert alert-success'> <strong> ".$stmt->rowCount() ."</strong>  add succesfully</p>";
                     $url = "?action=newmembers";
                     // header("Refresh:2 $url");
@@ -92,7 +179,7 @@
 ?>
 <div class="container theform">
         <h1> Add new Members </h1>
-        <form  method="POST" enctype="application/x-www-form-urlencoded">
+        <form  method="POST" enctype="multipart/form-data">
             <div class="mb-3 col-md-6">
                 <label for="exampleInputname" class="form-label">your name</label>
                 <input type="text" name="UserName" class="form-control check-exists-user" id="exampleInputname"
@@ -144,6 +231,9 @@
                     <option value="1">approved </option>
                     <option value="0">pending approval member</option>
                 </select>
+            </div>
+            <div class="mb-3 col-md-6 confirmdiv">
+                <input type="file" name="avatar" class="form-control" id="avatar" >
             </div>
 
 

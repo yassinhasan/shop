@@ -303,6 +303,137 @@ $(document).ready(function()
    
 })
 
+// click on select to select subcategory
+let select_category = document.querySelector(".select-cat");
+
+
+if(select_category)
+{
+    select_category.onchange =function()
+{
+    // let senddata = new URLSearchParams("CategoryId",select_category.value);
+    let x ="";
+    let senddata = new FormData();
+    senddata.append("CategoryId",select_category.value)
+    fetch("http://www.shop.com/admin/check_data/checkdata.php",
+    {
+        method: "POST",
+        body: senddata
+    })
+    .then(response=> response.json())
+    .then(data=>
+    {
+
+        if(data != false)
+        {
+           for(let cat of data)
+           {
+               x +=`<option value="${cat['CategoryId']}"> ${cat['CategoryName']}</option>`;
+           }
+          let parent = document.querySelector(".parent-test");
+          if(! document.querySelector(".test"))
+          {
+            parent.insertAdjacentHTML("afterend",` <div class="mb-3 col-md-6 test">
+           <select class="form-select" name="subCategoryId">${x}</select></div>`)
+          }
+          else
+          {
+            let u = document.querySelector(".test");
+            u.innerHTML = "";  
+            parent.insertAdjacentHTML("afterend",` <div class="mb-3 col-md-6 test">
+            <select class="form-select" name="subCategoryId">${x}</select></div>`)
+          }
+
+        }
+        else
+        {
+            if(document.querySelector(".test"))
+            {
+                let u = document.querySelector(".test");
+                u.innerHTML = ""; 
+            }
+        }
+      
+    })
+}
+}
+
+// create tags
+
+let tagcontainer = document.querySelector(".tag-container");
+
+// هعمل تاجس حسبب عدد العناصر الي هكتبها ف الانبةت
+function createtags(label)
+{
+    let tagdiv = document.createElement("div");
+    tagdiv.classList.add("tag");
+    let span = document.createElement("span");
+    span.innerHTML = label;
+    let i = document.createElement("i");
+    i.classList.add("fas");
+    i.classList.add("fa-times");
+    i.classList.add("icon");
+    i.setAttribute("data-value",label)
+    tagdiv.appendChild(span);
+    tagdiv.appendChild(i);
+    return tagdiv;
+    // هضيف التاج الجديد ف الاول مش ف الاخر
+}
+
+// هعمل ارراي هحط فيها العناصر الي هضفها من الانبوت
+let tags = [];
+let taginput = document.querySelector(".tag-container input");
+hiddeninput = document.querySelector("input[name=tags]");
+//  علي حسبب العناصر الي في الاراي هعمل لوب وهضفهم عكسي
+function addtags()
+{
+    // هشيل كل التاجات الي انضافت الاول عشان هضيف حسب الاراي فقط
+    document.querySelectorAll(".tag").forEach((e)=>
+    {
+        e.parentElement.removeChild(e)
+    })
+    tags.reverse().forEach((tag)=>
+    {
+
+        let alltagsdiv = createtags(tag);
+        tagcontainer.prepend(alltagsdiv);
+    })
+    hiddeninput.value = tags.toString();
+}
+
+if(taginput)
+{
+    taginput.addEventListener("keyup",(e)=>
+{
+    // لما اضغط ع المسافه 
+   if(e.which === 32)
+   {
+    tags.push(taginput.value.trim());
+    addtags();
+    taginput.value =""
+   }
+
+})
+}
+
+document.addEventListener("click",(e)=>
+{
+    if(e.target.classList.contains("icon"))
+    {
+       let value = e.target.getAttribute("data-value");
+       let index = tags.indexOf(value);
+    //    tags.splice(index,-1)
+        // console.log(index)
+        // tags = tags.slice(index,index+1,1)
+        // tags.splice(index,index)
+        tags = [...tags.splice(0,index),...tags.splice(index+1)];
+
+        addtags();
+
+    }
+})
+
+
 
 
 

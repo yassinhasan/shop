@@ -367,7 +367,8 @@ searchinput.addEventListener("keyup",()=>
                {
                 for(let items of data)
                 {
-                    let dataname = items['itemName'].replace(" ","");
+                let dataname = items['itemName'].replace(/\s|[0-9]|[%]/g,"");
+                  console.log(dataname)
                      if(document.querySelector(`[data-name=${dataname}`))
                         {
                             document.querySelector(`[data-name=${dataname}`).style.display ="flex";

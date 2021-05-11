@@ -1,5 +1,8 @@
-<?php 
-    if(isset($_POST['save']))
+<?php
+
+use function PHPSTORM_META\type;
+
+if(isset($_POST['save']))
     {
         // itemId	itemName	itemDescription	itemPrice	itemsAddDate	itemCountryMade	itemImage	itemStatus	itemRating	categoryId	userId
        $itemName  = isset($_POST['itemName'])?trim($_POST['itemName']) : "";
@@ -9,11 +12,14 @@
        $itemImage = isset($_POST['itemImage'])?$_POST['itemImage'] : "";
        $itemRating = isset($_POST['itemRating'])?$_POST['itemRating'] : "";
        $categoryId = isset($_POST['categoryId'])?$_POST['categoryId'] : "";
+       $subCategoryId = isset($_POST['subCategoryId'])?$_POST['subCategoryId'] : "";
        $userId = isset($_POST['userId'])?$_POST['userId'] : "";
+       $tags = isset($_POST['tags'])?$_POST['tags'] : "";
+
 
  
-        $sql = "INSERT INTO items (`itemName`, `itemDescription`, `itemPrice`, `itemsAddDate`,`itemCountryMade`, `itemImage`,`itemRating`,`categoryId`,`userId`)
-        VALUES(:itemName,:itemDescription,:itemPrice,now(),:itemCountryMade,:itemImage,:itemRating,:categoryId,:userId)";
+        $sql = "INSERT INTO items (`itemName`, `itemDescription`, `itemPrice`, `itemsAddDate`,`itemCountryMade`, `itemImage`,`itemRating`,`categoryId`,`subCategoryId`,`userId`,`tags`)
+        VALUES(:itemName,:itemDescription,:itemPrice,now(),:itemCountryMade,:itemImage,:itemRating,:categoryId,:subCategoryId,:userId,:tags)";
         global $conn;
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":itemName",$itemName,PDO::PARAM_STR);
@@ -23,7 +29,9 @@
         $stmt->bindValue(":itemImage",$itemImage,PDO::PARAM_STR);
         $stmt->bindValue(":itemRating",$itemRating,PDO::PARAM_INT);
         $stmt->bindValue(":categoryId",$categoryId,PDO::PARAM_INT);
+        $stmt->bindValue(":subCategoryId",$subCategoryId,PDO::PARAM_INT);
         $stmt->bindValue(":userId",$userId,PDO::PARAM_INT);
+        $stmt->bindValue(":tags",$tags,PDO::PARAM_STR);
 
         $formeroor = [];
 
@@ -148,11 +156,11 @@
                     <option value="1">*</option>
                 </select>
             </div>
-            <div class="mb-3 col-md-6">
-                <select class="chosen-select" name="categoryId">
+            <div class="mb-3 col-md-6 parent-test">
+                <select class="chosen-select select-cat" name="categoryId">
                     <option value="">choose category</option>
                     <?php 
-                    $sql = "SELECT categoryId,categoryName FROM category";
+                    $sql = "SELECT categoryId,categoryName FROM category where subCategory = 0";
                     global $conn;
                     $stmt = $conn->prepare($sql);
                     if($stmt->execute())
@@ -170,6 +178,7 @@
                     ?>
                 </select>
             </div>
+
             <div class="mb-3 col-md-6">
                 <select class="chosen-select" name="userId">
                     <option value="">choose user</option>
@@ -192,8 +201,15 @@
                     ?>
                 </select>
             </div>
-
-         
+            <div class="tag-container mb-3 col-md-6">
+                    <input type="text" <?= isset($_POST['tags'])?$_POST['tags'] : "" ?>>
+                    <input name="tags" type="hidden">
+            </div>
+            <!-- <div class="mb-3 col-md-6">
+                    <label for="tags" class="form-label">tags Names </label>
+                    <input type="text" name="tags" class="form-control" id="tags"
+                    value="<?= isset($_POST['tags'])?$_POST['tags'] : "" ?>">
+            </div> -->
 
 
             <button type="submit" class="btn btn-primary submit" name="save" >Submit</button>

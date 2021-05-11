@@ -50,6 +50,9 @@
             <th>
             user
             </th>
+            <th>
+            tags
+            </th>
             <th class="action">
                 action
             </th>
@@ -109,6 +112,9 @@
                     </td>
                     <td>
                     <?= $item['userName'] ?>
+                    </td>
+                    <td>
+                    <?= $item['tags'] ?>
                     </td>
                     <td class="edit-action">
                        <a href="?action=items_edit&itemId=<?=$item['itemId']?>"

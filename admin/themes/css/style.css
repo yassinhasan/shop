@@ -380,6 +380,26 @@ margin-bottom: 20px;
   overflow: hidden;
   position: relative;
 }
+/* start sub vateory */
+.sub-cat
+{
+    list-style: none;
+    position: relative;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.sub-cat li
+{
+    position: relative;
+    margin: 10px;
+    font-size: 16px;
+    position: relative;
+    font-weight: bold;
+}
+.sub-cat li::before
+{
+    content: "-";
+}
 @media (max-width:991px) {
     .cat-box
 {
@@ -632,4 +652,46 @@ margin-bottom: 20px;
     top: 50%;
     transform: translate(-50%, -50%);
     border-style: solid;
+}
+
+/* start tags */
+.tag-container
+{
+    border: 1px solid #ced4da;
+    display: flex;
+    border-radius: 5px;
+    overflow: hidden;
+    flex-wrap: wrap;
+    padding: 5px;
+}
+.tag-container .tag 
+{
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-right: 4px;
+}
+
+.tag-container .tag svg
+{
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    /* padding: 22px; */
+    width: 19px;
+}
+.tag-container input
+{
+    outline: none;
+    border: none;
+    font-size: 18px;
+    padding: 7px;
+    flex: 1;
+}
+.tag-container input:focus
+{
+    outline: none;
+    border: none;
 }

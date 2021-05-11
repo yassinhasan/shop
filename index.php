@@ -11,10 +11,10 @@ get_main_webisite_navbar(); ?>
 <div class="container">
     <div class="item-box">
         <?php
-            foreach(get_all('items','WHERE itemApprove = 1','itemId','desc') as $item)
+            foreach(get_all('items','WHERE itemApprove = 1','ORDER BY itemId','desc') as $item)
             { ?>
                     <?php 
-                        $datat_name = str_replace(" ","",$item['itemName']);
+                        $datat_name = preg_replace('/\s|[0-9]|[%]/',"",$item['itemName']);
                         
                     ?>
                     <div class="item-content all-items" data-name="<?= $datat_name ?>">

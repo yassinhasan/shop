@@ -7,14 +7,18 @@
        $Visibility = isset($_POST['Visibility'])?$_POST['Visibility'] : "";
        $AllowComments = isset($_POST['AllowComments'])?$_POST['AllowComments'] : "";
        $AllowAds = isset($_POST['AllowAds'])?$_POST['AllowAds'] : "";
+       $subCategory = isset($_POST['subCategory'])?$_POST['subCategory'] : 0;
+    //    var_dump($subCategory);
+    //    exit;
 
-        $sql = "INSERT INTO category (`CategoryName`, `CategoryDescription`, `Ordering`, `Visibility`, `AllowComments`, `AllowAds`)
-        VALUES(:CategoryName,:CategoryDescription,:Ordering,:Visibility,:AllowComments,:AllowAds)";
+        $sql = "INSERT INTO category (`CategoryName`, `CategoryDescription`,`subCategory`, `Ordering`, `Visibility`, `AllowComments`, `AllowAds`)
+        VALUES(:CategoryName,:CategoryDescription,:subCategory,:Ordering,:Visibility,:AllowComments,:AllowAds)";
         global $conn;
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":CategoryName",$CategoryName,PDO::PARAM_STR);
         $stmt->bindValue(":CategoryDescription",$CategoryDescription,PDO::PARAM_STR);
         $stmt->bindValue(":Ordering",$Ordering,PDO::PARAM_INT);
+        $stmt->bindValue(":subCategory",$subCategory,PDO::PARAM_INT);
         $stmt->bindValue(":Visibility",$Visibility,PDO::PARAM_STR);
         $stmt->bindValue(":AllowComments",$AllowComments,PDO::PARAM_STR);
         $stmt->bindValue(":AllowAds",$AllowAds,PDO::PARAM_STR);
@@ -35,6 +39,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';
         }
+        // if(empty($subCategory))
+        // {
+        //     $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+        //     <strong>subCategory</strong> can not be empty
+        //     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        //   </div>';
+        // }
         if(empty($Ordering))
         {
             $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -105,6 +116,19 @@
                 <input type="text" name="CategoryDescription" class="form-control" id="CategoryDescription"
                 value="<?= isset($_POST['CategoryDescription'])?$_POST['CategoryDescription'] : "" ?>"
                 >
+            </div>
+            <div class="mb-3 col-md-6">
+                <select class="chosen-select" name="subCategory">
+                    <option> subCategory </option>
+                    <option value="0"> None </option>
+                    <?php
+                        $allcategories = get_all("category",'WHERE subCategory = 0');
+                        foreach($allcategories as $cat)
+                        { ?>
+                            <option value="<?= $cat['CategoryId'] ?>"> <?= $cat['CategoryName'] ?> </option>
+                        <?php }
+                    ?>
+                </select>
             </div>
             <div class="mb-3 col-md-6">
                 <label for="Ordering" class="form-label">Ordering Category</label>

@@ -12,9 +12,8 @@
         $categoryId = isset($_POST['categoryId'])?$_POST['categoryId'] : "";
         $userId = isset($_POST['userId'])?$_POST['userId'] : "";
         $itemId = isset($_POST['itemId'])?$_POST['itemId'] : "";
+        $tags = isset($_POST['tags'])?$_POST['tags'] : "";
       
- 
-
 
         $formeroor = [];
 
@@ -72,13 +71,13 @@
         if(empty($formeroor))
         {
 
-          $sql = " UPDATE  items  SET itemName = ? , itemDescription  = ? , itemPrice = ? , itemImage = ? , itemCountryMade  = ? , itemRating  = ?, categoryId  = ? , userId  = ? WHERE itemId =  ?";
+          $sql = " UPDATE  items  SET itemName = ? , itemDescription  = ? , itemPrice = ? , itemImage = ? , itemCountryMade  = ? , itemRating  = ?, categoryId  = ? , userId  = ?,tags = ? WHERE itemId =  ?";
           global $conn;
            
 
 
           $stmt = $conn->prepare($sql);
-          if ($stmt->execute(array($itemName,$itemDescription,$itemPrice,$itemImage,$itemCountryMade,$itemRating,$categoryId,$userId,$itemId)))
+          if ($stmt->execute(array($itemName,$itemDescription,$itemPrice,$itemImage,$itemCountryMade,$itemRating,$categoryId,$userId,$tags,$itemId)))
             {
                     
               $_SESSION['message'] ="<p class='alert alert-success'> <strong> ".$stmt->rowCount() ."</strong>  updated</p>";

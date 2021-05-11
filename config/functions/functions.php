@@ -175,7 +175,7 @@ function add_check_onedit($obje , $checked)
 function get_categories()
 {
     global $conn;
-    $sql = "SELECT * FROM category";
+    $sql = "SELECT * FROM category WHERE subCategory = 0";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -266,10 +266,10 @@ checkislogin();
 
 // get all
 
-function get_all($table_name,$where=null,$orderby,$oreder_type)
+function get_all($table_name,$where=null,$orderby = null,$oreder_type = null)
 {
     global $conn;
-    $sql = "SELECT * FROM $table_name $where ORDER BY $orderby $oreder_type" ;
+    $sql = "SELECT * FROM $table_name $where $orderby $oreder_type" ;
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -47,6 +47,26 @@
                 >
             </div>
             <div class="mb-3 col-md-6">
+                <select class="chosen-select" name="subCategory">
+                    <option value=""> subCategory </option>
+                    <option value="0"> None </option>
+                    <?php
+                        $allcategories = get_all("category",'WHERE subCategory = 0');
+                        foreach($allcategories as $cat)
+                        { ?>
+                            <option value="<?= $cat['CategoryId'] ?>"
+                           <?php 
+                          if($cat['CategoryId'] == $category['CategoryId'])
+                          {
+                              echo "selected";
+                          } 
+                           ?>
+                            > <?= $cat['CategoryName'] ?> </option>
+                        <?php }
+                    ?>
+                </select>
+            </div>
+            <div class="mb-3 col-md-6">
                 <label for="Ordering" class="form-label">Ordering Category</label>
                 <input type="number" name="Ordering"	 class="form-control check-email" id="Ordering" 
                 value="<?= isset($category['Ordering']) ? $category['Ordering'] : 0 ?>"

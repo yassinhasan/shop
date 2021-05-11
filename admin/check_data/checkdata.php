@@ -149,5 +149,30 @@ require_once "../../ini.php";
 
             }   
         }
+        elseif(isset($_POST['CategoryId']))
+        {
+            header('Content-type: application/json');//with header Content type 
+            global $conn;
+                $CategoryId = isset($_POST['CategoryId']) ?$_POST['CategoryId'] : 0; 
+                $sql = "SELECT * FROM category WHERE subCategory = :CategoryId AND subCategory != 0" ;
+                $stmt = $conn->prepare($sql);
+                $stmt->bindValue(":CategoryId",$CategoryId,PDO::PARAM_INT); 
+            if ($stmt->execute())
+            {
+               if($stmt->rowCount() > 0)
+               {
+                   $result =  $stmt->fetchAll();
+                   echo  json_encode($result);
+                
+               }
+                else
+                {
+                    echo json_encode(false);
+                 
+                }
+
+            }   
+        }
+
 ?>
 

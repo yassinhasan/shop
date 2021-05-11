@@ -97,6 +97,24 @@ $_SESSION['message'] = "";
                                     <li class='list-group-item'><a href="profile.php?userId=<?= $item['userId']?>"><?= $item['FullName'] ?></a></li>
                                 </ul>
                             </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    Tags
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <?php  
+                                    $alltags = explode(",",$item['tags']);
+                                    echo "<li class='list-group-item'>";
+                                    foreach($alltags as $tag)
+                                    { ?>
+                                    <span><a href="tags.php?tagname=<?= $tag ?> "> <?= $tag ?>   </a> | 
+                                    <span>
+
+                              <?php }
+                                    ?>
+                                   </li> 
+                                </ul>
+                            </div>
                         </div>
                         
             </div>
@@ -128,10 +146,14 @@ $_SESSION['message'] = "";
                                         if($stmt2->rowCount() > 0)
                                         {
                                             $_SESSION['message'] ="<p class='alert alert-success'> <strong> ".$stmt2->rowCount() ."</strong> comment add succesfully</p>";
+                                            header("refresh: 0");
+                                            exit;
                                         }
                                         else
                                         {
                                             $_SESSION['message'] ="<p class='alert alert-danger'>>no cooment  added</p>";
+                                            header("refresh: 0");
+                                            exit;
                                         }
                                     }
                                 }
@@ -142,7 +164,7 @@ $_SESSION['message'] = "";
                             <form action="<?= $_SERVER['PHP_SELF']."?itemId=".$itemId?>" method="POST" class="form">
                             <div class="form-group">
                             <label for="exampleFormControlTextarea1" class="form-label">leave comment</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" name="com-desc"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" name="com-desc" required></textarea>
                             <input type="submit" class="btn btn-info" name="subcomment" value="add-comment">
                             </div>
                             </form>
