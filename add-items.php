@@ -17,10 +17,31 @@ get_main_webisite_navbar();
        $itemDescription = isset($_POST['itemDescription'])?trim($_POST['itemDescription']) : "";
        $itemPrice = isset($_POST['itemPrice'])?$_POST['itemPrice'] : "";
        $itemCountryMade = isset($_POST['itemCountryMade'])?$_POST['itemCountryMade'] : "";
-       $itemImage = isset($_POST['itemImage'])?$_POST['itemImage'] : "";
        $itemRating = isset($_POST['itemRating'])?$_POST['itemRating'] : "";
        $categoryId = isset($_POST['categoryId'])?$_POST['categoryId'] : "";
        $userId = isset($_SESSION['User']['UserId'])?$_SESSION['User']['UserId'] : "";
+
+    //    avatar
+        $avatars = isset($_FILES['avatar'])?$_FILES['avatar'] : "";
+        $avatar_temp_name = $avatars['tmp_name'];
+        $avatar_name = $avatars['name'];
+        $avatar_size = $avatars['size'];
+        $avatar_type = $avatars['type'];
+        $avatar_extension =explode(".",$avatar_name);
+        // avtat extension
+        $avatar_extension = strtolower(end($avatar_extension));
+
+        $allowed_Extension  =array("png","jpeg","jpg","gif","jfif");
+
+
+        //allowed size
+        $allowed_size = 4E6;
+
+        $rand_name = rand(0,1000);
+
+        //avatar file name random
+        $avatr_rand_name = $rand_name."_".$avatar_name;
+
 
         $sql = "INSERT INTO items (`itemName`, `itemDescription`, `itemPrice`, `itemsAddDate`,`itemCountryMade`, `itemImage`,`itemRating`,`categoryId`,`userId`)
         VALUES(:itemName,:itemDescription,:itemPrice,now(),:itemCountryMade,:itemImage,:itemRating,:categoryId,:userId)";
@@ -30,7 +51,7 @@ get_main_webisite_navbar();
         $stmt->bindValue(":itemDescription",$itemDescription,PDO::PARAM_STR);
         $stmt->bindValue(":itemPrice",$itemPrice,PDO::PARAM_STR);
         $stmt->bindValue(":itemCountryMade",$itemCountryMade,PDO::PARAM_STR);
-        $stmt->bindValue(":itemImage",$itemImage,PDO::PARAM_STR);
+        $stmt->bindValue(":itemImage",$avatr_rand_name,PDO::PARAM_STR);
         $stmt->bindValue(":itemRating",$itemRating,PDO::PARAM_INT);
         $stmt->bindValue(":categoryId",$categoryId,PDO::PARAM_INT);
         $stmt->bindValue(":userId",$userId,PDO::PARAM_INT);
@@ -63,12 +84,7 @@ get_main_webisite_navbar();
             <strong>itemCountryMade</strong> can not be empty
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';        }
-        if(empty($itemImage))
-        {
-            $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>itemImage</strong> can not be empty
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>';        }
+
         if(empty($itemRating))
         {
             $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -87,6 +103,27 @@ get_main_webisite_navbar();
             <strong>userId</strong> can not be empty
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';        }
+          if( $avatars['error'] === 4)
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory no file uploaeded</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          }
+          if( !in_array($avatar_extension,$allowed_Extension))
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory this type not allowed</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          }
+          if(  $avatar_size > $allowed_size)
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory max allowed size is 4 MG</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          }
 
         if(empty($formeroor))
         {
@@ -94,6 +131,13 @@ get_main_webisite_navbar();
             {
                 if($stmt->rowCount() > 0 )
                 {
+
+                    $dir = dirname(__FILE__);
+                    $first_path = "themes".DS."images".DS."items";
+                    $sec_path = "themes".DS."images".DS."items";
+    
+                    movefile_in_main($first_path,$sec_path,$itemName,$avatar_name,$avatar_temp_name,$avatr_rand_name);
+
                     $_SESSION['message'] ="<p class='alert alert-success'> <strong> ".$stmt->rowCount() ."</strong>  add succesfully</p>";
                     // header("Refresh:2 $url");
                     header("Refresh:0");
@@ -122,7 +166,7 @@ get_main_webisite_navbar();
     <h1> Add new items </h1>
     <div class="row add-item-row">     
             <div class="col-md-8">
-                <form  method="POST" enctype="application/x-www-form-urlencoded" class="theform">
+                <form  method="POST" enctype="multipart/form-data" class="theform">
                         <div class="col-md-10">
                             <label for="itemName" class="form-label">Item Name </label>
                             <input type="text" name="itemName" class="form-control check-item-exists"
@@ -147,12 +191,9 @@ get_main_webisite_navbar();
                             >
                         </div>         
 
-                    <div class="col-md-10">
-                        <label for="itemImage" class="form-label">select image </label>
-                        <input type="text" name="itemImage"	 class="form-control" id="itemImage" 
-                        value="<?= isset($_POST['itemImage'])?$_POST['itemImage'] : "" ?> "
-                        >
-                    </div>
+                        <div class="mb-3 col-md-6">
+                      <input type="file" name="avatar" class="form-control" id="itemImage">
+                      </div>
                     <div class="col-md-10 form-group-select">
                         <select class="form-select all-countries" name="itemCountryMade">
                         <option value="">chose country</option>

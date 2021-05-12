@@ -9,13 +9,31 @@ if(isset($_POST['save']))
        $itemDescription = isset($_POST['itemDescription'])?trim($_POST['itemDescription']) : "";
        $itemPrice = isset($_POST['itemPrice'])?$_POST['itemPrice'] : "";
        $itemCountryMade = isset($_POST['itemCountryMade'])?$_POST['itemCountryMade'] : "";
-       $itemImage = isset($_POST['itemImage'])?$_POST['itemImage'] : "";
        $itemRating = isset($_POST['itemRating'])?$_POST['itemRating'] : "";
        $categoryId = isset($_POST['categoryId'])?$_POST['categoryId'] : "";
        $subCategoryId = isset($_POST['subCategoryId'])?$_POST['subCategoryId'] : "";
        $userId = isset($_POST['userId'])?$_POST['userId'] : "";
        $tags = isset($_POST['tags'])?$_POST['tags'] : "";
+        
+    //    avatar
+        $avatars = isset($_FILES['avatar'])?$_FILES['avatar'] : "";
+        $avatar_temp_name = $avatars['tmp_name'];
+        $avatar_name = $avatars['name'];
+        $avatar_size = $avatars['size'];
+        $avatar_type = $avatars['type'];
+        $avatar_extension =explode(".",$avatar_name);
+        // avtat extension
+        $avatar_extension = strtolower(end($avatar_extension));
 
+        $allowed_Extension  =array("png","jpeg","jpg","gif","jfif");
+
+
+        //allowed size
+        $allowed_size = 4E6;
+
+        $rand_name = rand(0,1000);
+        //avatar file name random
+        $avatr_rand_name = $rand_name."_".$avatar_name;
 
  
         $sql = "INSERT INTO items (`itemName`, `itemDescription`, `itemPrice`, `itemsAddDate`,`itemCountryMade`, `itemImage`,`itemRating`,`categoryId`,`subCategoryId`,`userId`,`tags`)
@@ -26,7 +44,7 @@ if(isset($_POST['save']))
         $stmt->bindValue(":itemDescription",$itemDescription,PDO::PARAM_STR);
         $stmt->bindValue(":itemPrice",$itemPrice,PDO::PARAM_STR);
         $stmt->bindValue(":itemCountryMade",$itemCountryMade,PDO::PARAM_STR);
-        $stmt->bindValue(":itemImage",$itemImage,PDO::PARAM_STR);
+        $stmt->bindValue(":itemImage",$avatr_rand_name,PDO::PARAM_STR);
         $stmt->bindValue(":itemRating",$itemRating,PDO::PARAM_INT);
         $stmt->bindValue(":categoryId",$categoryId,PDO::PARAM_INT);
         $stmt->bindValue(":subCategoryId",$subCategoryId,PDO::PARAM_INT);
@@ -61,12 +79,6 @@ if(isset($_POST['save']))
             <strong>itemCountryMade</strong> can not be empty
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';        }
-        if(empty($itemImage))
-        {
-            $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>itemImage</strong> can not be empty
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>';        }
         if(empty($itemRating))
         {
             $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -85,6 +97,27 @@ if(isset($_POST['save']))
             <strong>userId</strong> can not be empty
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';        }
+          if( $avatars['error'] === 4)
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory no file uploaeded</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          }
+          if( !in_array($avatar_extension,$allowed_Extension))
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory this type not allowed</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          }
+          if(  $avatar_size > $allowed_size)
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory max allowed size is 4 MG</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          }
 
         if(empty($formeroor))
         {
@@ -92,6 +125,12 @@ if(isset($_POST['save']))
             {
                 if($stmt->rowCount() > 0 )
                 {
+                    $dir = dirname(__FILE__);
+                    $first_path = "themes".DS."images".DS."items";
+                    $sec_path = "themes".DS."images".DS."items";
+    
+                    movefile($dir,$first_path,$sec_path,$itemName,$avatar_name,$avatar_temp_name,$avatr_rand_name);
+
                     $_SESSION['message'] ="<p class='alert alert-success'> <strong> ".$stmt->rowCount() ."</strong>  add succesfully</p>";
                     $url = "?action=newitems";
                     // header("Refresh:2 $url");
@@ -114,7 +153,7 @@ if(isset($_POST['save']))
         <!-- // itemId	itemName	itemDescription	itemPrice	itemsAddDate	itemCountryMade	itemImage	itemStatus	itemRating	categoryId	userId -->
 <div class="container theform">
         <h1> Add new items </h1>
-        <form  method="POST" enctype="application/x-www-form-urlencoded">
+        <form  method="POST" enctype="multipart/form-data">
                 <div class="mb-3 col-md-6">
                     <label for="itemName" class="form-label">Item Name </label>
                     <input type="text" name="itemName" class="form-control" id="itemName"
@@ -136,10 +175,7 @@ if(isset($_POST['save']))
                 </div>         
 
             <div class="mb-3 col-md-6">
-                <label for="itemImage" class="form-label">select image </label>
-                <input type="text" name="itemImage"	 class="form-control" id="itemImage" 
-                value="<?= isset($_POST['itemImage'])?$_POST['itemImage'] : "" ?> "
-                >
+                <input type="file" name="avatar" class="form-control" id="itemImage">
             </div>
             <div class="mb-3 col-md-6">
                 <select class="form-select all-countries" name="itemCountryMade">

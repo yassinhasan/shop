@@ -38,7 +38,7 @@
 <div class="container theform">
         <h1> Edit Item</h1>
                 <!-- // itemId	itemName	itemDescription	itemPrice	itemsAddDate	itemCountryMade	itemImage	itemStatus	itemRating	categoryId	userId -->
-        <form action="?action=items_update" method="POST" enctype="application/x-www-form-urlencoded form-edit">
+        <form action="?action=items_update" method="POST" enctype="multipart/form-data">
             <input type="hidden" value="<?= $itemId ?>"  name="itemId">
             <div class="mb-3 col-md-6">
                 <label for="itemName" class="form-label">your name</label>
@@ -61,10 +61,7 @@
                 </div>         
 
             <div class="mb-3 col-md-6">
-                <label for="itemImage" class="form-label">select image </label>
-                <input type="text" name="itemImage"	 class="form-control" id="itemImage" 
-                value="<?= isset($item['itemImage'])?$item['itemImage'] : "" ?> "
-                >
+                    <input type="file" name="avatar" class="form-control" id="itemImage">
             </div>
             <div class="mb-3 col-md-6">
                 <select class="form-select all-countries" name="itemCountryMade">

@@ -14,6 +14,31 @@
         $itemId = isset($_POST['itemId'])?$_POST['itemId'] : "";
         $tags = isset($_POST['tags'])?$_POST['tags'] : "";
       
+            // start file
+            
+            $avatars = isset($_FILES['avatar'])?$_FILES['avatar'] : "";
+            $avatar_temp_name = $avatars['tmp_name'];
+            $avatar_name = $avatars['name'];
+            $avatar_size = $avatars['size'];
+            $avatar_type = $avatars['type'];
+            $avatar_extension =explode(".",$avatar_name);
+             // avtat extension
+            $avatar_extension = strtolower(end($avatar_extension));
+     
+            $allowed_Extension  =array("png","jpeg","jpg","gif","jfif");
+            
+     
+            //allowed size
+            $allowed_size = 4E6;
+     
+            $rand_name = rand(0,1000);
+             //avatar file name random will saved in db
+            $avatr_rand_name = $rand_name."_".$avatar_name;
+
+
+
+            // eend file
+
 
         $formeroor = [];
 
@@ -43,12 +68,6 @@
             <strong>itemCountryMade</strong> can not be empty
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';        }
-        if(empty($itemImage))
-        {
-            $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>itemImage</strong> can not be empty
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>';        }
         if(empty($itemRating))
         {
             $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -67,6 +86,28 @@
             <strong>userId</strong> can not be empty
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>';        }
+          if( $avatars['error'] === 4)
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory no file uploaeded</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          }
+          // file
+          if( !in_array($avatar_extension,$allowed_Extension) && $avatars['error'] != 4)
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory this type not allowed</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          }
+          if(  $avatar_size > $allowed_size)
+          {
+              $formeroor[] = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong> soory max allowed size is 4 MG</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';        
+          } 
 
         if(empty($formeroor))
         {
@@ -77,9 +118,15 @@
 
 
           $stmt = $conn->prepare($sql);
-          if ($stmt->execute(array($itemName,$itemDescription,$itemPrice,$itemImage,$itemCountryMade,$itemRating,$categoryId,$userId,$tags,$itemId)))
+          if ($stmt->execute(array($itemName,$itemDescription,$itemPrice,$avatr_rand_name,$itemCountryMade,$itemRating,$categoryId,$userId,$tags,$itemId)))
             {
-                    
+              
+              $dir = dirname(__FILE__);
+              $first_path = "themes".DS."images".DS."items";
+              $sec_path = "themes".DS."images".DS."items";
+
+              movefile($dir,$first_path,$sec_path,$itemName,$avatar_name,$avatar_temp_name,$avatr_rand_name);  
+              
               $_SESSION['message'] ="<p class='alert alert-success'> <strong> ".$stmt->rowCount() ."</strong>  updated</p>";
 
               $url = "?action=newitems";

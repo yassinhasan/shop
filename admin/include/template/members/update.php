@@ -132,54 +132,61 @@
                         if ($stmt->execute(array($NewPassword,$UserName,$FullName,$Email, $avatr_rand_name,$UserId )))
                         {
                              //  //   move file
-                            $dir = dirname(__FILE__);
-                            $up = $dir.DS."..".DS."..".DS."..".DS."..".DS;
-                            $file_direction =  $dir.DS."..".DS."..".DS."..".DS."themes".DS."images".DS."uploads".DS.$UserName.DS;
-                            $file_direction_in_main = $up."themes".DS."images".DS."uploads".DS.$UserName.DS;
+                            // $dir = dirname(__FILE__);
+                            // $up = $dir.DS."..".DS."..".DS."..".DS."..".DS;
+                            // $file_direction =  $dir.DS."..".DS."..".DS."..".DS."themes".DS."images".DS."uploads".DS.$UserName.DS;
+                            // $file_direction_in_main = $up."themes".DS."images".DS."uploads".DS.$UserName.DS;
 
-                            if(!file_exists($file_direction))
-                            {
-                                mkdir($file_direction,0777,true);
-                            }
-                            if(!file_exists($file_direction_in_main))
-                            {
-                                mkdir($file_direction_in_main,0777,true);
-                            }
+                            // if(!file_exists($file_direction))
+                            // {
+                            //     mkdir($file_direction,0777,true);
+                            // }
+                            // if(!file_exists($file_direction_in_main))
+                            // {
+                            //     mkdir($file_direction_in_main,0777,true);
+                            // }
 
-                            // check if file already exists before
+                            // // check if file already exists before
 
-                            $files =  glob($file_direction."*.*");
-                            $mainfiles =  glob($file_direction_in_main."*.*");
-                            foreach($files as $f)
-                            {
-                                if(is_file($f)){
-                                    $fn = explode("_",$f);
-                                    if(strtolower($fn[1]) == $avatar_name)
-                                    {
+                            // $files =  glob($file_direction."*.*");
+                            // $mainfiles =  glob($file_direction_in_main."*.*");
+                            // foreach($files as $f)
+                            // {
+                            //     if(is_file($f)){
+                            //         $fn = explode("_",$f);
+                            //         if(strtolower($fn[1]) == $avatar_name)
+                            //         {
                                         
-                                        unlink($f);
-                                    }
+                            //             unlink($f);
+                            //         }
 
-                                }
-                            }
-                            foreach($mainfiles as $f)
-                            {
-                                if(is_file($f)){
-                                    $fn = explode("_",$f);
-                                    if(strtolower($fn[1]) == $avatar_name)
-                                    {
+                            //     }
+                            // }
+                            // foreach($mainfiles as $f)
+                            // {
+                            //     if(is_file($f)){
+                            //         $fn = explode("_",$f);
+                            //         if(strtolower($fn[1]) == $avatar_name)
+                            //         {
                                        
-                                        unlink($f);
-                                    }
+                            //             unlink($f);
+                            //         }
 
-                                }
-                            }
+                            //     }
+                            // }
                             
 
-                            if(move_uploaded_file($avatar_temp_name,$file_direction.$avatr_rand_name))
-                            {
-                                copy($file_direction.$avatr_rand_name,$file_direction_in_main.$avatr_rand_name);
-                            }
+                            // if(move_uploaded_file($avatar_temp_name,$file_direction.$avatr_rand_name))
+                            // {
+                            //     copy($file_direction.$avatr_rand_name,$file_direction_in_main.$avatr_rand_name);
+                            // }
+                            $dir = dirname(__FILE__);
+                            $first_path = "themes".DS."images".DS."uploads";
+                            $sec_path = "themes".DS."images".DS."uploads";
+
+                            movefile($dir,$first_path,$sec_path,$UserName,$avatar_name,$avatar_temp_name,$avatr_rand_name);
+                             
+                            
                              // end file upload
                         
                             $_SESSION['message'] ="<p class='alert alert-success'> <strong> ".$stmt->rowCount() ."</strong>  updated</p>";

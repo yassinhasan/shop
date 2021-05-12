@@ -21,7 +21,19 @@ get_main_webisite_navbar(); ?>
                         <a 
                         href="items.php?itemId=<?= $item['itemId']?>"
                         >
-                            <img src="//cdn-aldawaa.com/media/catalog/product/cache/4af02630f79858b92879ba1184cb0894/1/0/101975_2.jpg" alt="test">
+                        <?php
+                        if(!empty($item['itemImage']))
+                        { ?>
+                            <img src="./themes/images/items/<?= $item['itemName']."/".$item['itemImage'] ?>" alt="test">
+                            <?php 
+                        }
+                        else
+                        { ?>
+
+                            <img src="./themes/images/items/placeholder_new.jpg ?>" alt="test">
+                            <?php 
+                        }
+                        ?>
                         </a>
                         <span class="love-item"><i class="fas fa-heart rate-by-heart"></i></span>
                         <div class="item-info">

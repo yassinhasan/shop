@@ -276,4 +276,112 @@ function get_all($table_name,$where=null,$orderby = null,$oreder_type = null)
     return $results; 
 }
    
+function movefile($dir,$first_path,$second_path,$user_path,$file_name_input,$temp_name,$file_moved_name)
+{
+        //  //   move file
+        $up = $dir.DS."..".DS."..".DS."..".DS."..".DS;
+        $file_direction =  $dir.DS."..".DS."..".DS."..".DS.$first_path.DS.$user_path.DS;
+        $file_direction_in_main = $up.$second_path.DS.$user_path.DS;
+
+        
+        if(!file_exists($file_direction))
+        {
+            mkdir($file_direction,0777,true);
+        }
+        if(!file_exists($file_direction_in_main))
+        {
+            mkdir($file_direction_in_main,0777,true);
+        }
+
+        // check if file already exists before
+
+        $files =  glob($file_direction."*.*");
+        $mainfiles =  glob($file_direction_in_main."*.*");
+        foreach($files as $f)
+        {
+            if(is_file($f)){
+                $fn = explode("_",$f);
+                if(strtolower($fn[1]) == $file_name_input)
+                {
+                    
+                    unlink($f);
+                }
+
+            }
+        }
+        foreach($mainfiles as $f)
+        {
+            if(is_file($f)){
+                $fn = explode("_",$f);
+                if(strtolower($fn[1]) == $file_name_input)
+                {
+                
+                    unlink($f);
+                }
+
+            }
+        }
+        
+
+        if(move_uploaded_file($temp_name,$file_direction.$file_moved_name))
+        {
+            copy($file_direction.$file_moved_name,$file_direction_in_main.$file_moved_name);
+        }
+        // end file upload
+}
+function movefile_in_main($first_path,$second_path,$user_path,$file_name_input,$temp_name,$file_moved_name)
+{
+        //  //   move file
+
+        $file_direction = $first_path.DS.$user_path.DS;
+        $file_direction_in_main = $second_path.DS.$user_path.DS;
+
+        
+       
+
+        if(!file_exists($file_direction))
+        {
+            mkdir($file_direction,0777,true);
+        }
+        if(!file_exists($file_direction_in_main))
+        {
+            mkdir($file_direction_in_main,0777,true);
+        }
+
+        // check if file already exists before
+
+        $files =  glob($file_direction."*.*");
+        $mainfiles =  glob($file_direction_in_main."*.*");
+        foreach($files as $f)
+        {
+            if(is_file($f)){
+                $fn = explode("_",$f);
+                if(strtolower($fn[1]) == $file_name_input)
+                {
+                    
+                    unlink($f);
+                }
+
+            }
+        }
+        foreach($mainfiles as $f)
+        {
+            if(is_file($f)){
+                $fn = explode("_",$f);
+                if(strtolower($fn[1]) == $file_name_input)
+                {
+                
+                    unlink($f);
+                }
+
+            }
+        }
+        
+
+        if(move_uploaded_file($temp_name,$file_direction.$file_moved_name))
+        {
+            copy($file_direction.$file_moved_name,$file_direction_in_main.$file_moved_name);
+        }
+        // end file upload
+}
 

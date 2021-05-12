@@ -37,7 +37,24 @@ $_SESSION['message'] = "";
             <div class="box">
                         <div class="item-section">
                             <div class="card">
-                                <img src="./themes/images/avatar.jpg" class="card-img-top" alt="...">
+                            <?php
+                            if(!empty($item['itemImage']))
+                            { ?>
+                                <img src="./themes/images/items/<?= $item['itemName']."/".$item['itemImage'] ?>" class="card-img-top" alt="...">
+                                <?php 
+                            }
+                            else
+                            { ?>
+
+                                <img src="./themes/images/items/placeholder_new.jpg ?>" alt="test"
+                                class="card-img-top" alt="...">
+                                
+                                
+                                <?php 
+                            }
+                            ?>
+
+
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $item['itemName'] ?></h5>
                                 </div>
@@ -161,7 +178,7 @@ $_SESSION['message'] = "";
 
                         ?>
                         <div class="form-comment">
-                            <form action="<?= $_SERVER['PHP_SELF']."?itemId=".$itemId?>" method="POST" class="form">
+                            <form action="<?= $_SERVER['PHP_SELF']."?itemId=".$itemId?>" method="POST" class="form" enctype="multipart/form-data">
                             <div class="form-group">
                             <label for="exampleFormControlTextarea1" class="form-label">leave comment</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" name="com-desc" required></textarea>
@@ -170,7 +187,7 @@ $_SESSION['message'] = "";
                             </form>
                         </div>
                         <?php
-                        $sql = "SELECT comments.*,users.FullName FROM comments 
+                        $sql = "SELECT comments.*,users.* FROM comments 
                         INNER JOIN users 
                         ON
                         comments.userId = users.UserId
@@ -193,7 +210,7 @@ $_SESSION['message'] = "";
                                     <div class="user-comment">
                                         <div class="user-comment-ifno">
                                             <div class="box">
-                                            <img src="./themes/images/avatar.jpg" class="card-img-top" alt="...">
+                                            <img src="./themes/images/uploads/<?= trim($comment['UserName'])."/".$comment['avatar']?>" class="card-img-top" alt="...">
                                             
                                             <a href="profile.php?userId=<?= $comment['userId']?>"><?= $comment['FullName'] ?></a>
                                             </div>
