@@ -1,5 +1,5 @@
 <?php 
-
+    
     // var_dump($_SESSION['message']);
     $message =(isset($_SESSION['message']) && !empty($_SESSION['message'])) ? $_SESSION['message'] : false;
     
@@ -29,7 +29,7 @@
 
 <div class="container theform">
         <h1> Edit your Porfile</h1>
-        <form action="?action=update" method="POST" enctype="application/x-www-form-urlencoded form-edit">
+        <form action="?action=update" method="POST" enctype="multipart/form-data">
             <input type="hidden" value="<?= $UserId ?>"  name="UserId">
             <div class="mb-3 col-md-6">
                 <label for="exampleInputname" class="form-label">your name</label>
@@ -59,6 +59,9 @@
                 <label for="exampleInputPassword2" class="form-label">New Password</label>
                 <input type="password" name="NewPassword" class="form-control" id="exampleInputPassword2"
                 value="" >
+            </div>
+            <div class="mb-3 col-md-6">
+                <input type="file" name="avatar" class="form-control" id="avatar" >
             </div>
 
             <button type="submit" class="btn btn-primary submit" name="save">Submit</button>

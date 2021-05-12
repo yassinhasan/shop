@@ -24,7 +24,7 @@ get_main_webisite_navbar();
         <div class="box">
             <div class="profile-section">
                 <div class="card">
-                    <img src="./themes/images/avatar.jpg" class="card-img-top" alt="...">
+                    <img src="./themes/images/uploads/<?= $user['UserName']."/".$user['avatar']?>" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title"><?= $user['UserName'] ?></h5>
                         <p class="card-text">EMAIL : <?= $user['Email']?>.</p>
